@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+
+  id             Int             @id @default(autoincrement())
+  nome           String
+  login          String          @unique
+  senha          String
+  perfil         String
+
+  movimentacoes  Movimentacao[]
+
+  createdAt      DateTime @default(now())
+
+}
+
+model Patrimonio {
+
+  id             Int             @id @default(autoincrement())
+  nome           String
+  tipo           String
+  patrimonio     String          @unique
+  status         String
+  localizacao    String
+
+  movimentacoes  Movimentacao[]
+
+  createdAt      DateTime @default(now())
+
+}
+
+model Movimentacao {
+
+  id             Int      @id @default(autoincrement())
+
+  tipo           String
+  observacao     String
+
+  patrimonioId   Int
+  usuarioId      Int
+
+  patrimonio     Patrimonio @relation(fields: [patrimonioId], references: [id])
+
+  usuario        Usuario @relation(fields: [usuarioId], references: [id])
+
+  createdAt      DateTime @default(now())
+
+}
