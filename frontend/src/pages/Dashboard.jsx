@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import Patrimonios from './Patrimonios'
+import Movimentacoes from './Movimentacoes'
 
 function Dashboard() {
+const [tela, setTela] = useState('patrimonios')
 
     function sair() {
   
@@ -45,7 +48,29 @@ function Dashboard() {
 
         </div>
       
-        <Patrimonios />
+        <div className="mt-4">
+
+  <button
+    className="btn btn-primary me-2"
+    onClick={() => setTela('patrimonios')}
+  >
+    Patrimônios
+  </button>
+
+  <button
+    className="btn btn-secondary"
+    onClick={() => setTela('movimentacoes')}
+  >
+    Movimentações
+  </button>
+
+</div>
+
+{
+  tela === 'patrimonios'
+    ? <Patrimonios />
+    : <Movimentacoes />
+}
 
       </div>
   
