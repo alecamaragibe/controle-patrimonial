@@ -9,6 +9,7 @@ function Patrimonios() {
   const [patrimonio, setPatrimonio] = useState('')
   const [status, setStatus] = useState('')
   const [localizacao, setLocalizacao] = useState('')
+  const [idEdicao, setIdEdicao] = useState(null)
 
   async function buscarPatrimonios() {
 
@@ -47,36 +48,63 @@ function Patrimonios() {
 
       const token = localStorage.getItem('token')
 
-      await axios.post(
-        'http://localhost:3000/patrimonios',
-        {
-          nome,
-          tipo,
-          patrimonio,
-          status,
-          localizacao
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      )
+      if (idEdicao)  {
 
-      alert('Patrimônio cadastrado!')
+        await axios.put(
+          `http://localhost:3000/patrimonios/${idEdicao}`,
+          {
+            nome,
+            tipo,
+            patrimonio,
+            status,
+            localizacao
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        )
+        
+        alert('Patrimônio atualizado!')
+      
+      } else {
+
+        await axios.post(
+          'http://localhost:3000/patrimonios',
+          {
+            nome,
+            tipo,
+            patrimonio,
+            status,
+            localizacao
+          },
+          {
+
+            headers: {
+              Authorization: 'Bearer ${token}'
+            }
+          }
+        )
+
+        alert('Patrimônio cadastrado!')
+
+      } 
+
 
       setNome('')
       setTipo('')
       setPatrimonio('')
       setStatus('')
       setLocalizacao('')
+      setIdEdicao(null)
 
       buscarPatrimonios()
 
     } catch (error) {
 
       console.log(error)
-
+      
       alert('Erro ao cadastrar patrimônio')
 
     }
@@ -118,6 +146,17 @@ function Patrimonios() {
 
     }
 
+  }
+
+  function prepararEdicao(item) {
+
+    setIdEdicao(item.id)
+    setNome(item.nome)
+    setTipo(item.tipo)
+    setPatrimonio(item.patrimonio)
+    setStatus(item.status)
+    setLocalizacao(item.localizacao)
+  
   }
 
   useEffect(() => {
@@ -207,7 +246,7 @@ function Patrimonios() {
               type="submit"
               className="btn btn-success w-100"
             >
-              Cadastrar
+              {idEdicao ? 'Atualizar' : 'Cadastrar'}
             </button>
 
           </div>
@@ -246,6 +285,17 @@ function Patrimonios() {
               <td>
 
                 <button
+                  type="button"
+                  className="btn btn-warning btn-sm me-2"
+                  onClick={() => 
+                    prepararEdicao(patrimonio)
+                  }
+                >
+                  Editar
+                </button>
+
+                
+                <button
                   className="btn btn-danger btn-sm"
                   onClick={() =>
                     excluirPatrimonio(patrimonio.id)
@@ -253,6 +303,7 @@ function Patrimonios() {
                 >
                   Excluir
                 </button>
+
 
               </td>
 
