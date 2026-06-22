@@ -1,7 +1,6 @@
 const prisma = require('../database/prisma')
 
 const criarMovimentacao = async (req, res) => {
-
     try {
 
         const {
@@ -14,54 +13,51 @@ const criarMovimentacao = async (req, res) => {
 
         const movimentacao =
             await prisma.movimentacao.create({
-
                 data: {
                     tipo,
                     observacao,
                     patrimonioId,
                     usuarioId
                 }
-
             })
-        if (tipo === 'EMPRESTIMO') {
-            await prisma.patrimonio.update({
 
+        if (tipo === 'EMPRESTIMO') {
+
+            await prisma.patrimonio.update({
                 where: {
                     id: patrimonioId
                 },
-
                 data: {
                     status: 'Emprestado'
                 }
-
             })
 
-        }  
-        
+        }
+
         if (tipo === 'DEVOLUCAO') {
 
             await prisma.patrimonio.update({
-
                 where: {
                     id: patrimonioId
                 },
-
                 data: {
                     status: 'Disponível'
                 }
             })
+
         }
-        
+
         return res.status(201).json(movimentacao)
-    
-    }   catch (error) {
+
+    } catch (error) {
+
+        console.error(error)
 
         return res.status(500).json({
             erro: error.message
         })
 
     }
-
 }
 
 const listarMovimentacoes = async (req, res) => {
