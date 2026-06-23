@@ -84,7 +84,7 @@ function Patrimonios() {
           {
 
             headers: {
-              Authorization: 'Bearer ${token}'
+              Authorization: `Bearer ${token}`
             }
           }
         )
