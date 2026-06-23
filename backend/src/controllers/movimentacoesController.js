@@ -28,7 +28,8 @@ const criarMovimentacao = async (req, res) => {
                     id: patrimonioId
                 },
                 data: {
-                    status: 'Emprestado'
+                    status: 'Emprestado',
+                    localizacao: 'Em uso / externo'
                 }
             })
 
@@ -41,7 +42,8 @@ const criarMovimentacao = async (req, res) => {
                     id: patrimonioId
                 },
                 data: {
-                    status: 'Disponível'
+                    status: 'Disponível',
+                    localizacao: 'Sala de TI'
                 }
             })
 

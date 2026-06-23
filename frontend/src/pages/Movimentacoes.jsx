@@ -213,6 +213,7 @@ function Movimentacoes() {
             <th>Tipo</th>
             <th>Usuário</th>
             <th>Observação</th>
+            <th>Data</th>
           </tr>
 
         </thead>
@@ -227,6 +228,7 @@ function Movimentacoes() {
               <td>{movimentacao.tipo}</td>
               <td>{movimentacao.usuario.nome}</td>
               <td>{movimentacao.observacao}</td>
+              <td>{new Date(movimentacao.createdAt).toLocaleString('pt-BR')}</td>
 
             </tr>
 

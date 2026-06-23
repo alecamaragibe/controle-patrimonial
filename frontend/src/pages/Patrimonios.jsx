@@ -10,6 +10,8 @@ function Patrimonios() {
   const [status, setStatus] = useState('')
   const [localizacao, setLocalizacao] = useState('')
   const [idEdicao, setIdEdicao] = useState(null)
+  const [busca, setBusca] = useState('')
+  const [filtroStatus, setFiltroStatus] = useState('TODOS')
 
   async function buscarPatrimonios() {
 
@@ -255,6 +257,30 @@ function Patrimonios() {
 
       </form>
 
+      <div className="mb-3">
+
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Pesquisar patrimônio..."
+          value={busca}
+          onChange={(e) => setBusca(e.target.value)}
+        />  
+      </div>
+
+      <div className="mb-3">
+
+        <select
+          className="form-select"
+          value={filtroStatus}
+          onChange={(e) => setFiltroStatus(e.target.value)}
+        >
+          <option value="TODOS">Todos</option>
+          <option value="Disponível">Disponível</option>
+          <option value="Emprestado">Emprestado</option>
+
+          </select>  
+      </div>    
       <table className="table">
 
         <thead>
@@ -272,7 +298,21 @@ function Patrimonios() {
 
         <tbody>
 
-          {patrimonios.map((patrimonio) => (
+        {patrimonios
+          .filter((patrimonio) => {
+
+            const matchBusca =
+              patrimonio.nome
+                .toLowerCase()
+                .includes(busca.toLowerCase())
+            
+            const matchStatus =
+              filtroStatus === 'TODOS'||
+              patrimonio.status === filtroStatus
+              
+            return matchBusca && matchStatus
+          })    
+        .map((patrimonio) => (
 
             <tr key={patrimonio.id}>
 
