@@ -8,6 +8,7 @@ function Movimentacoes() {
   const [patrimonioId, setPatrimonioId] = useState('')
   const [tipo, setTipo] = useState('')
   const [observacao, setObservacao] = useState('')
+  const [novaLocalizacao, setNovaLocalizacao] = useState('')
 
   async function buscarMovimentacoes() {
 
@@ -76,7 +77,8 @@ function Movimentacoes() {
         {
           patrimonioId: Number(patrimonioId),
           tipo,
-          observacao
+          observacao,
+          novaLocalizacao
         },
         {
           headers: {
@@ -90,6 +92,7 @@ function Movimentacoes() {
       setPatrimonioId('')
       setTipo('')
       setObservacao('')
+      setNovaLocalizacao('')
 
       buscarMovimentacoes()
       buscarPatrimonios()
@@ -188,6 +191,19 @@ function Movimentacoes() {
             />
 
           </div>
+
+          <div className="col-md-3 mb-3">
+
+            <input
+                type="text"
+                classname="form-control"
+                placeholder="Nova Localização"
+                value={novaLocalizacao}
+                onChange={(e) => setNovaLocalizacao(e.target.value)}
+            />    
+
+          </div>
+        
 
           <div className="col-md-2 mb-3">
 

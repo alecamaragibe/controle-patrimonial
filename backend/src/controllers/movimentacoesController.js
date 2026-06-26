@@ -6,7 +6,8 @@ const criarMovimentacao = async (req, res) => {
         const {
             tipo,
             observacao,
-            patrimonioId
+            patrimonioId,
+            novaLocalizacao
         } = req.body
 
         const usuarioId = req.usuarioId
@@ -29,7 +30,7 @@ const criarMovimentacao = async (req, res) => {
                 },
                 data: {
                     status: 'Emprestado',
-                    localizacao: 'Em uso / externo'
+                    localizacao: novaLocalizacao
                 }
             })
 
@@ -43,7 +44,7 @@ const criarMovimentacao = async (req, res) => {
                 },
                 data: {
                     status: 'Disponível',
-                    localizacao: 'Sala de TI'
+                    localizacao: novaLocalizacao
                 }
             })
 

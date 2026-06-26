@@ -6,6 +6,7 @@ const cors = require('cors')
 const usuariosRoutes = require('./routes/usuariosRoutes')
 const patrimoniosRoutes = require('./routes/patrimoniosRoutes')
 const movimentacoesRoutes = require('./routes/movimentacoesRoutes')
+const dashboardRoutes = require('./routes/dashboardRoutes')
 
 const app = express()
 
@@ -15,6 +16,7 @@ app.use(express.json())
 app.use(usuariosRoutes)
 app.use(patrimoniosRoutes)
 app.use(movimentacoesRoutes)
+app.use('/dashboard', dashboardRoutes)
 
 app.get('/', (req, res) => {
   return res.send('API funcionando')
