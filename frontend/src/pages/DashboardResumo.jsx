@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import GraficoPatrimonios from '../components/GraficoPatrimonios'
 
 function DashboardResumo() {
 
@@ -35,7 +36,7 @@ function DashboardResumo() {
   if (!dados) return <p>Carregando...</p>
 
   return (
-
+  <>
     <div className="row mt-4">
 
       <div className="col-md-4">
@@ -60,7 +61,13 @@ function DashboardResumo() {
       </div>
 
     </div>
-  )
+
+    <div className="mt-4">
+      <GraficoPatrimonios dados={dados} />
+    </div>
+
+  </>
+)
 }
 
 export default DashboardResumo
