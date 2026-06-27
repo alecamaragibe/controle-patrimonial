@@ -3,6 +3,8 @@ import Sidebar from './Components/Sidebar'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import CadastrarBem from './pages/CadastrarBem'
+import Movimentacoes from "./pages/Movimentacoes";
+import LogsAuditoria from "./pages/LogsAuditoria";
 
 function App() {
   return (
@@ -21,8 +23,8 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/cadastrar-bem" element={<CadastrarBem />} />
             <Route path="/login" element={<Login />} />
-            
-           
+            <Route path="/movimentacoes" element={<Movimentacoes />} />
+            <Route path="/auditoria" element={<LogsAuditoria />} />
           </Routes>
         </div>
 
