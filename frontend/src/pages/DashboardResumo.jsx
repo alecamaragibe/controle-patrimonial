@@ -62,7 +62,7 @@ function DashboardResumo() {
 
     </div>
 
-    <div className="mt-4">
+    <div className="d-flex justify-content-center">
       <GraficoPatrimonios dados={dados} />
     </div>
 
