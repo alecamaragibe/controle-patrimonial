@@ -5,7 +5,7 @@ import Movimentacoes from './Movimentacoes'
 
 function Dashboard() {
 
-  const [tela, setTela] = useState('patrimonios')
+  const [tela, setTela] = useState('dashboard')
 
   function sair() {
     localStorage.removeItem('token')
@@ -37,15 +37,15 @@ function Dashboard() {
       {/* MENU */}
       <div className="mt-4">
 
-        <button
+      <button
           className="btn btn-primary me-2"
-          onClick={() => setTela('patrimonios')}
+          onClick={() => setTela('dashboard')}
         >
-          Patrimônios
-        </button>
+          Dashboard
+        </button>  
 
         <button
-          className="btn btn-secondary"
+          className="btn btn-primary me-2"
           onClick={() => setTela('movimentacoes')}
         >
           Movimentações
@@ -53,10 +53,10 @@ function Dashboard() {
 
         <button
           className="btn btn-primary me-2"
-          onClick={() => setTela('dashboard')}
+          onClick={() => setTela('patrimonios')}
         >
-          Dashboard
-        </button>  
+          Patrimônios
+        </button>
 
       </div>
 
