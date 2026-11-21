@@ -30,6 +30,7 @@ const authMiddleware = (req, res, next) => {
         }
 
         req.usuarioId = decoded.id
+        req.usuarioPerfil = decoded.perfil
 
         next()
 

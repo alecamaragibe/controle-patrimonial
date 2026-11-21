@@ -25,7 +25,7 @@ function LogsAuditoria() {
     <div className="container-fluid pt-4">
       
       <h3 className="text-center mb-5 fw-bold" style={{ color: '#333' }}>
-        SGP - Controle de Ativos e Inventário Digital
+        Descomplica Patrimonial
       </h3>
 
       <div className="mt-4">

@@ -8,48 +8,156 @@ datasource db {
 }
 
 model Usuario {
+  id     Int    @id @default(autoincrement())
+  nome   String
+  login  String @unique
+  senha  String
+  perfil String
 
-  id             Int             @id @default(autoincrement())
-  nome           String
-  login          String          @unique
-  senha          String
-  perfil         String
+  transferenciasSolicitadas Transferencia[] @relation("TransferenciasSolicitadas")
+  transferenciasRespondidas Transferencia[] @relation("TransferenciasRespondidas")
 
-  movimentacoes  Movimentacao[]
+  solicitacoesPatrimonioSolicitadas SolicitacaoPatrimonio[] @relation("SolicitacoesDoGestor")
+  solicitacoesPatrimonioAnalisadas   SolicitacaoPatrimonio[] @relation("SolicitacoesDoAdministrador")
 
-  createdAt      DateTime @default(now())
+  movimentacoes          Movimentacao[]
+  inventarioGerenciado   Inventario?    @relation("GestorInventario")
+  emprestimosRegistrados Emprestimo[]
+  createdAt              DateTime       @default(now())
+}
 
+model Inventario {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  descricao String
+  createdAt DateTime @default(now())
+  gestorId  Int?     @unique
+
+  transferenciasOrigem  Transferencia[] @relation("InventarioOrigem")
+  transferenciasDestino Transferencia[] @relation("InventarioDestino")
+
+  gestor      Usuario?     @relation("GestorInventario", fields: [gestorId], references: [id])
+  patrimonios Patrimonio[]
 }
 
 model Patrimonio {
+  id           Int         @id @default(autoincrement())
+  nome         String
+  tipo         String
+  patrimonio   String      @unique
+  status       String
+  inventarioId Int?
+  inventario   Inventario? @relation(fields: [inventarioId], references: [id])
+  localizacao  String
 
-  id             Int             @id @default(autoincrement())
-  nome           String
-  tipo           String
-  patrimonio     String          @unique
-  status         String
-  localizacao    String
+  transferencias Transferencia[]
+  solicitacoesPatrimonio SolicitacaoPatrimonio[]
 
-  movimentacoes  Movimentacao[]
-
-  createdAt      DateTime @default(now())
-
+  movimentacoes Movimentacao[]
+  emprestimos   Emprestimo[]
+  createdAt     DateTime       @default(now())
 }
 
 model Movimentacao {
+  id Int @id @default(autoincrement())
 
-  id             Int      @id @default(autoincrement())
+  tipo       String
+  observacao String
 
-  tipo           String
-  observacao     String
+  patrimonioId Int
+  usuarioId    Int
 
-  patrimonioId   Int
-  usuarioId      Int
+  patrimonio Patrimonio @relation(fields: [patrimonioId], references: [id])
 
-  patrimonio     Patrimonio @relation(fields: [patrimonioId], references: [id])
+  usuario Usuario @relation(fields: [usuarioId], references: [id])
 
-  usuario        Usuario @relation(fields: [usuarioId], references: [id])
+  createdAt DateTime @default(now())
+}
 
-  createdAt      DateTime @default(now())
+model LogAuditoria {
+  id          Int      @id @default(autoincrement())
+  usuarioId   Int?     @map("usuario_id")
+  usuarioNome String   @map("usuario_nome")
+  dataHora    DateTime @default(now()) @map("data_hora")
+  acao        String
+  detalhes    String   @db.Text
 
+  @@map("log_auditoria")
+}
+
+model Emprestimo {
+  id              Int @id @default(autoincrement())
+  patrimonioId    Int
+  registradoPorId Int
+
+  destinatarioNome          String
+  destinatarioIdentificacao String?
+  setorDestino              String?
+
+  dataEmprestimo        DateTime  @default(now())
+  dataPrevisaoDevolucao DateTime?
+  dataDevolucao         DateTime?
+
+  observacao String?
+
+  patrimonio    Patrimonio @relation(fields: [patrimonioId], references: [id])
+  registradoPor Usuario    @relation(fields: [registradoPorId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Transferencia {
+  id Int @id @default(autoincrement())
+
+  patrimonioId        Int
+  inventarioOrigemId  Int
+  inventarioDestinoId Int
+
+  solicitadaPorId Int
+  respondidaPorId Int?
+
+  status     String  @default("pendente")
+  observacao String?
+
+  dataSolicitacao DateTime  @default(now())
+  dataResposta    DateTime?
+
+  patrimonio Patrimonio @relation(fields: [patrimonioId], references: [id])
+
+  inventarioOrigem Inventario @relation("InventarioOrigem", fields: [inventarioOrigemId], references: [id])
+
+  inventarioDestino Inventario @relation("InventarioDestino", fields: [inventarioDestinoId], references: [id])
+
+  solicitadaPor Usuario @relation("TransferenciasSolicitadas", fields: [solicitadaPorId], references: [id])
+
+  respondidaPor Usuario? @relation("TransferenciasRespondidas", fields: [respondidaPorId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model SolicitacaoPatrimonio {
+  id Int @id @default(autoincrement())
+
+  tipo   String
+  status String @default("PENDENTE")
+
+  gestorId        Int
+  administradorId Int?
+  patrimonioId    Int?
+
+  dadosSolicitados Json?
+
+  justificativaSolicitante String? @db.Text
+  justificativaAdmin       String? @db.Text
+
+  dataSolicitacao DateTime  @default(now())
+  dataDecisao     DateTime?
+
+  gestor Usuario @relation("SolicitacoesDoGestor", fields: [gestorId], references: [id])
+
+  administrador Usuario? @relation("SolicitacoesDoAdministrador", fields: [administradorId], references: [id])
+
+  patrimonio Patrimonio? @relation(fields: [patrimonioId], references: [id])
+
+  @@map("solicitacoes_patrimonio")
 }
